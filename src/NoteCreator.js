@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-export default function NoteCreator({ newNote, handleChange, handleSubmit }) {
+export default function NoteCreator({ handleSubmit }) {
   const [isEditing, setEditing] = useState(false);
+  const [newNote, setNewNote] = useState({ title: "", content: "" });
   return (
     <div className="creator">
       {!isEditing ? (
@@ -19,7 +20,7 @@ export default function NoteCreator({ newNote, handleChange, handleSubmit }) {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              handleSubmit();
+              handleSubmit(newNote);
               setEditing(!isEditing);
             }}
           >
@@ -28,7 +29,7 @@ export default function NoteCreator({ newNote, handleChange, handleSubmit }) {
               placeholder="Title"
               value={newNote.title}
               onChange={(e) => {
-                handleChange(e);
+                setNewNote({ ...newNote, [e.target.name]: e.target.value });
               }}
             />
             <textarea
@@ -37,7 +38,7 @@ export default function NoteCreator({ newNote, handleChange, handleSubmit }) {
               placeholder="Content"
               value={newNote.content}
               onChange={(e) => {
-                handleChange(e);
+                setNewNote({ ...newNote, [e.target.name]: e.target.value });
               }}
             />
             <br />

@@ -2,9 +2,27 @@ import { useState } from "react";
 import { Note } from "./Note";
 import { defaultNotes } from "./data";
 import NoteCreator from "./NoteCreator";
+function noteReducer(notes, action) {
+  switch (action.type) {
+    case "delete": {
+      return notes.filter((a) => a.id !== action.id);
+    }
+    case "submit": {
+      return [
+        ...notes,
+        {
+          note: action.note,
+          id: Date.now(),
+        },
+      ];
+    }
+    case "change": {
+    }
+  }
+}
 export function Notes() {
   const [notes, setNotes] = useState(defaultNotes);
-  const [newNote, setNewNote] = useState({ title: "", content: "" });
+  // const [newNote, setNewNote] = useState({ title: "", content: "" });
 
   const listNotes = notes.map((note) => (
     <Note
@@ -14,7 +32,7 @@ export function Notes() {
       note={note}
     ></Note>
   ));
-  const isFormValid = newNote.content !== "";
+
   function handleDelete(id) {
     setNotes(notes.filter((a) => a.id !== id));
     console.log("clicked");
@@ -25,7 +43,8 @@ export function Notes() {
       [e.target.name]: e.target.value,
     });
   }
-  function handleSubmit() {
+  function handleSubmit(newNote) {
+    const isFormValid = newNote.content !== "";
     if (isFormValid) {
       // let newNotes = notes.slice();
 
@@ -34,8 +53,8 @@ export function Notes() {
       //   ...newNote,
       // });
 
-      setNewNote({ title: "", content: "" });
-      setNotes([...notes, { ...newNote, id: Date.now() }]);
+      setNotes([...notes, newNote]);
+      console.log("erm");
     } else {
       alert("You must fill content");
     }
@@ -48,7 +67,7 @@ export function Notes() {
         } else {
           return t;
         }
-      }),
+      })
     );
   }
 

@@ -1,6 +1,6 @@
 import "./styles.css";
 import { useState } from "react";
-import { Note, Notes } from "./Note";
+import { Notes } from "./Notes";
 import Toolbar from "./Toolbar";
 import { RToolbar } from "./Toolbar";
 function AlertButton({ message, children }) {
@@ -18,7 +18,6 @@ export default function App() {
   return (
     <>
       <Notes />
-      
     </>
   );
 }

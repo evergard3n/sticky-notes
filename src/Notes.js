@@ -1,27 +1,12 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import { Note } from "./Note";
 import { defaultNotes } from "./data";
 import NoteCreator from "./NoteCreator";
-function noteReducer(notes, action) {
-  switch (action.type) {
-    case "delete": {
-      return notes.filter((a) => a.id !== action.id);
-    }
-    case "submit": {
-      return [
-        ...notes,
-        {
-          note: action.note,
-          id: Date.now(),
-        },
-      ];
-    }
-    case "change": {
-    }
-  }
-}
+import noteReducer from "./noteReducer";
+
 export function Notes() {
-  const [notes, setNotes] = useState(defaultNotes);
+  // const [notes, setNotes] = useState(defaultNotes);
+  const [notes, dispatch] = useReducer(noteReducer, defaultNotes);
   // const [newNote, setNewNote] = useState({ title: "", content: "" });
 
   const listNotes = notes.map((note) => (
@@ -34,50 +19,33 @@ export function Notes() {
   ));
 
   function handleDelete(id) {
-    setNotes(notes.filter((a) => a.id !== id));
-    console.log("clicked");
-  }
-  function handleChange(e) {
-    setNewNote({
-      ...newNote,
-      [e.target.name]: e.target.value,
+    dispatch({
+      type: "delete",
+      id: id,
     });
   }
+  // function handleChange(e) {
+  //   setNewNote({
+  //     ...newNote,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // }
   function handleSubmit(newNote) {
-    const isFormValid = newNote.content !== "";
-    if (isFormValid) {
-      // let newNotes = notes.slice();
-
-      // newNotes.push({
-      //   id: Date.now(),
-      //   ...newNote,
-      // });
-
-      setNotes([...notes, newNote]);
-      console.log("erm");
-    } else {
-      alert("You must fill content");
-    }
+    dispatch({
+      type: "submit",
+      note: newNote,
+    });
   }
   function handleEdit(note) {
-    setNotes(
-      notes.map((t) => {
-        if (t.id === note.id) {
-          return note;
-        } else {
-          return t;
-        }
-      })
-    );
+    dispatch({
+      type: "edit",
+      note: note,
+    });
   }
 
   return (
     <div>
-      <NoteCreator
-        newNote={newNote}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-      ></NoteCreator>
+      <NoteCreator handleSubmit={handleSubmit}></NoteCreator>
       <div className="notes">{listNotes}</div>
     </div>
   );

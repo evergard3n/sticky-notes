@@ -21,6 +21,7 @@ export default function NoteCreator({ handleSubmit }) {
             onSubmit={(e) => {
               e.preventDefault();
               handleSubmit(newNote);
+              setNewNote({ title: "", content: "" });
               setEditing(!isEditing);
             }}
           >
@@ -29,7 +30,7 @@ export default function NoteCreator({ handleSubmit }) {
               placeholder="Title"
               value={newNote.title}
               onChange={(e) => {
-                setNewNote({ ...newNote, [e.target.name]: e.target.value });
+                setNewNote({ ...newNote, title: e.target.value });
               }}
             />
             <textarea
@@ -38,14 +39,20 @@ export default function NoteCreator({ handleSubmit }) {
               placeholder="Content"
               value={newNote.content}
               onChange={(e) => {
-                setNewNote({ ...newNote, [e.target.name]: e.target.value });
+                setNewNote({ ...newNote, content: e.target.value });
               }}
             />
             <br />
             <button type="submit" disabled={!newNote.content}>
               Add note
             </button>
-            <button onClick={() => setEditing(!isEditing)}>Cancel</button>
+            <button
+              onClick={() => {
+                setEditing(!isEditing);
+              }}
+            >
+              Cancel
+            </button>
           </form>
         </div>
       )}

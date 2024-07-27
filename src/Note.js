@@ -1,17 +1,29 @@
 import { useState } from "react";
-
-export function Note({ note, handleEdit, handleDelete }) {
+import { useContext } from "react";
+import { NotesDispatchContext } from "./Context";
+export function Note({ note }) {
   const [isChanging, setIsChanging] = useState(false);
+  const [currentNote, setCurrentNote] = useState(note);
+  const dispatch = useContext(NotesDispatchContext);
   let noteContent;
   if (!isChanging) {
     noteContent = (
       <div>
         <div className="note">
-          <div className="note-title">{note.title}</div>
-          <div className="note-content">{note.content}</div>
+          <div className="note-title">{currentNote.title}</div>
+          <div className="note-content">{currentNote.content}</div>
           <div className="buttons-holder">
             <button onClick={() => setIsChanging(!isChanging)}>Edit</button>
-            <button onClick={() => handleDelete(note.id)}>Delete</button>
+            <button
+              onClick={() => {
+                dispatch({
+                  type: "delete",
+                  id: note.id,
+                });
+              }}
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>
@@ -25,20 +37,29 @@ export function Note({ note, handleEdit, handleDelete }) {
               className="note-title"
               type="text"
               name="title"
-              value={note.title}
+              value={currentNote.title}
               onChange={(e) => {
-                handleEdit({ ...note, [e.target.name]: e.target.value });
+                setCurrentNote({ ...currentNote, title: e.target.value });
               }}
               placeholder="bruh"
             />
             <textarea
               name="content"
               onChange={(e) => {
-                handleEdit({ ...note, [e.target.name]: e.target.value });
+                setCurrentNote({ ...currentNote, content: e.target.value });
               }}
-              value={note.content}
+              value={currentNote.content}
             />
-            <button type="submit" onClick={() => setIsChanging(!isChanging)}>
+            <button
+              type="submit"
+              onClick={() => {
+                setIsChanging(!isChanging);
+                dispatch({
+                  type: "edit",
+                  note: currentNote,
+                });
+              }}
+            >
               Save
             </button>
           </form>

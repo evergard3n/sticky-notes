@@ -45,8 +45,7 @@ ul {
   box-shadow: 0px 0px 2px black;
   display: flex;
 }
-.creator-input {
-}
+
 input,
 textarea {
   border: none;
@@ -59,8 +58,7 @@ input:focus,
 textarea:focus {
   outline: none;
 }
-.create-form form {
-}
+
 textarea[name="content"] {
   min-height: 100px;
 
@@ -73,4 +71,11 @@ button {
 }
 button:hover {
   background: rgba(145, 145, 145, 0.15);
+}
+.util-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  
 }

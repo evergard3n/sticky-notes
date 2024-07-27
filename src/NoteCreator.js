@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { NotesDispatchContext } from "./Context";
 
-export default function NoteCreator({ handleSubmit }) {
+export default function NoteCreator() {
   const [isEditing, setEditing] = useState(false);
   const [newNote, setNewNote] = useState({ title: "", content: "" });
+  const dispatch = useContext(NotesDispatchContext);
   return (
     <div className="creator">
       {!isEditing ? (
@@ -20,7 +22,10 @@ export default function NoteCreator({ handleSubmit }) {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              handleSubmit(newNote);
+              dispatch({
+                type: "submit",
+                note: newNote,
+              });
               setNewNote({ title: "", content: "" });
               setEditing(!isEditing);
             }}

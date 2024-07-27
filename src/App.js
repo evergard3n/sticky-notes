@@ -1,23 +1,11 @@
 import "./styles.css";
-import { useState } from "react";
+
 import { Notes } from "./Notes";
-import Toolbar from "./Toolbar";
-import { RToolbar } from "./Toolbar";
-function AlertButton({ message, children }) {
-  return (
-    <button
-      onClick={() => {
-        alert(message);
-      }}
-    >
-      {children}
-    </button>
-  );
-}
+import { NotesProvider } from "./Context";
 export default function App() {
   return (
-    <>
+    <NotesProvider>
       <Notes />
-    </>
+    </NotesProvider>
   );
 }
